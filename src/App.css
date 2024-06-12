@@ -41,3 +41,56 @@ canvas { background: black; }
 .background-color-alt { 
   background-color: var(--background-alt);
 }
+
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+  0%, 100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shake {
+}
+
+@keyframes rotate {
+}
+
+.animated-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6347;
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  animation: pulse 2s infinite ease-in-out, shake 0.5s infinite 2s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 1s ease;
+}
+
+.animated-button:hover {
+  animation-play-state: paused;
+  transform: scale(2);
+}
