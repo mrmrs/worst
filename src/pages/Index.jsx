@@ -79,7 +79,7 @@ const App = () => {
                     <div style={{ textAlign: 'center' }}>
                         <p style={{ color: 'red', fontSize: '48px' }}>GAME OVER</p>
                         <p style={{ fontSize: '12px', margin: 0, lineHeight: 1 }}>SCORE</p>
-                        <p style={{ fontWeight: 'bold', fontSize: '128px', margin: 0 }} >{score}</p>
+              <p style={{ fontWeight: 'bold', fontSize: '48px', margin: 0 }} >{score}</p>
                         <small style={{ fontSize: '10px' }}>This game has been played {count} times</small>
                         <p style={{marginTop: '64px' }}>Continue?</p>
                         <button style={{display: 'inline-block', marginRight: '32px' }} onClick={() => window.location.reload()}>Yes</button>
