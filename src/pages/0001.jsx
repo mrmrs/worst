@@ -208,7 +208,7 @@ const GameComponent = () => {
       ctx.fillRect(dot.x, dot.y, 10, 10);
     });
 
-    ctx.font = '64px monospace';
+    ctx.font = '32px monospace';
     ctx.fillText(`Score: ${score.current}`, 32, 96);
 
     if (showTimeBonus) {
