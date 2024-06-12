@@ -1,8 +1,8 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Game0001 from './pages/0001';
-import GameOver from './pages/GameOver';
-import Home from './pages/Index'; 
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Game0001 from "./pages/0001";
+import GameOver from "./pages/GameOver";
+import Home from "./pages/Index";
 
 function App() {
   return (
