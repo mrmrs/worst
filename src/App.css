@@ -8,6 +8,11 @@
 html { 
   font-family: monospace, monospace;
 }
+body { 
+  margin: 0;
+  padding: 0;
+}
+*, *:after, *:before { box-sizing: border-box; font-family: monospace, monospace; }
 
 
 @media (prefers-color-scheme: dark) {

@@ -1,17 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Game0001 from './pages/0001';
+import GameOver from './pages/GameOver';
+import Home from './pages/Index'; 
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div className="text-color background-color" style={{ textAlign: 'center', height: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p>WORST GAMES</p>
-      </div>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/game-over" element={<GameOver />} />
+        <Route path="/0001" element={<Game0001 />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
