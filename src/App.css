@@ -1,0 +1,36 @@
+:root {
+  --text: #000000;  
+  --background: #FFFFFF;  
+  --text-alt: #FFFFFF;  
+  --background-alt: #000000;  
+}
+
+html { 
+  font-family: monospace, monospace;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #FFFFFF;  
+    --background: #000000;  
+    --text-alt: #000000;
+    --background-alt: #FFFFFF;
+  }
+}
+
+.text-color { 
+  color: var(--text);
+}
+
+.background-color { 
+  background-color: var(--background);
+}
+
+.text-color-alt { 
+  color: var(--text-alt);
+}
+
+.background-color-alt { 
+  background-color: var(--background-alt);
+}
