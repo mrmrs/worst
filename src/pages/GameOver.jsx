@@ -4,7 +4,7 @@ import '../App.css'
 
 function Page() {
   const navigate = useNavigate();
-  const gamePages = ['Index', '0001']; // Add new game page numbers here as you create them
+  const gamePages = [ '0001']; // Add new game page numbers here as you create them
 
   const handleContinue = () => {
     const randomGame = gamePages[Math.floor(Math.random() * gamePages.length)];
