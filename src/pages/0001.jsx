@@ -211,7 +211,7 @@ useEffect(() => {
     >
     <div
     style={{
-      backgroundImage: 'repeating-linear-gradient(135deg, transparent, transparent 5px, currentcolor 5px, currentcolor 6px)', color: 'black'
+      backgroundImage: 'repeating-linear-gradient(135deg, transparent 0px, transparent 8px, currentcolor 8px, currentcolor 24px)', color: 'black'
     }}
     ><GameArea /></div>
       {gameOver && (

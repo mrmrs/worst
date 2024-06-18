@@ -3,7 +3,7 @@ import { Stage, Layer, Rect, Text } from 'react-konva';
 
 const GameArea = ({ onGameOver }) => {
   const [blocks, setBlocks] = useState([]);
-  const [baseColor, setBaseColor] = useState('red');
+  const [baseColor, setBaseColor] = useState('black');
   const [score, setScore] = useState(0);
   const [missedBlocks, setMissedBlocks] = useState(0);
   const [flash, setFlash] = useState('');
@@ -11,28 +11,28 @@ const GameArea = ({ onGameOver }) => {
   const [spawnInterval, setSpawnInterval] = useState(4000);
 
   const colorList = [
-    'red', 
-    'blue', 
-    'green', 
-    'yellow', 
+    'black', 
+    'gray', 
+    'silver', 
+    'darkgray', 
+    'slate', 
     'orange', 
-    'navy'
   ];
 
   const colors = [
-    'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red',
-    'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 
-    'green', 'green', 'green', 'green', 'green', 'green', 
-    'yellow', 'yellow', 'yellow', 'yellow', 
-    'orange', 'orange',
-    'navy'
+    'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black', 'black',
+    'gray', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray', 
+    'silver', 'silver', 'silver', 'silver', 'silver', 'silver', 
+    'darkgray', 'darkgray', 'darkgray', 'darkgray', 
+    'slate', 'slate',
+    'orange'
   ];
-  const colorPoints = { red: 1, blue: 2, green: 3, yellow: 5, orange: 8, navy: 13 };
+  const colorPoints = { black: 1, gray: 2, silver: 3, darkgray: 5, slate: 8, orange: 13 };
   const gameWidth = window.innerWidth;
   const gameHeight = window.innerHeight;
   const baseHeight = 64;
-  const blockHeight = 8;
-  const blockWidth = 32;
+  const blockHeight = gameHeight / 32;
+  const blockWidth = gameHeight / 16;
   const missLimit = 10;
 
   const accelerateNearestBlock = () => {
@@ -84,7 +84,7 @@ const GameArea = ({ onGameOver }) => {
         }
         return true;
       }));
-    }, 10);
+    }, 1);
     return () => clearInterval(moveBlocks);
   }, [gameHeight, blockSpeed]);
 
@@ -131,10 +131,11 @@ const GameArea = ({ onGameOver }) => {
       <Layer>
         <Rect width={gameWidth} height={gameHeight} fill={flash || "transparent"} />
 
-    <Rect width={gameWidth / 2} height={32} fill='black' x={gameWidth - 128} y={8}/>
-        <Text text={`Score: ${score}`} fontSize={16} fill="white" x={gameWidth-96} y={16} />
+    <Rect width={gameWidth / 2} height={54} fill='black' x={gameWidth - 136} y={8}/>
+        <Text text={`Score: ${score}`} fontSize={16} fill="white" x={gameWidth-128} y={16} />
+    <Text text={`Misses: ${missedBlocks}`} fontSize={16} fill="white" x={gameWidth-128} y={40} />
         {blocks.map((block, i) => (
-          <Rect key={i} x={block.x} y={block.y} width={blockWidth} height={blockHeight} fill={block.color} opacity={80} />
+          <Rect key={i} x={block.x} y={block.y} width={blockWidth} height={blockHeight} fill={block.color}   />
         ))}
         <Rect
           x={0}
@@ -144,7 +145,7 @@ const GameArea = ({ onGameOver }) => {
           fill={baseColor}
           onClick={handleColorSwitch}
           onTap={handleColorSwitch}
-    opacity=".8"
+    
         />
       </Layer>
     </Stage>
