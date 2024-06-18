@@ -238,68 +238,68 @@ useEffect(() => {
             color: "yellow",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            justifyContent: "space-between",
             overflow: 'hidden', 
           }}
         >
-          <div style={{ textAlign: "center" }}>
-            <p style={{ color: "red", fontSize: "32px", fontWeight: "bold" }}>
+          <div style={{ textAlign: "center", paddingTop: '16px', height: '100%'  }}>
+            <p style={{ color: "red", fontSize: "16px", fontWeight: "400", margin: '0 0 16px 0'  }}>
               GAME OVER
             </p>
-            {!isNewHighScore && <p style={{ color: "white", fontSize: '10px', margin: 0, }}>SCORE</p>}
+        <div style={{  display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', justifyContent: 'center'  }}>
+        <div style={{ background: 'gold', color: 'black', padding: '4px 16px' }}>
+            {!isNewHighScore && <p style={{ fontSize: '10px', margin: '0 0 2px 0', }}>SCORE</p>}
             {isNewHighScore && (
-              <p style={{ color: "white", fontSize: '10px', margin: 0 }}>NEW HIGH SCORE!</p>
+              <p style={{ fontSize: '10px', margin: '0 0 2px 0',  }}>NEW HIGH SCORE!</p>
             )}
-            <p style={{ fontWeight: "bold", fontSize: "64px", margin: 0, lineHeight: 0.9 }}>
+            <p style={{ fontWeight: "bold", fontSize: "64px", margin: '8px 0 0 0', lineHeight: 0.9, }}>
               {score}
             </p>
+        </div>
             {username ? (
               <p></p>
             ) : (
-              <div style={{ maxWidth: '100%'}}>
-               <form onSubmit={handleUsernameSubmit} style={{ padding: '0 16px', marginBottom: '16px', maxWidth: '100%',}}>
-              <label style={{ display: 'block', marginBottom: '4px', padding: '8px', maxWidth: '100%',  }}>
-              <span style={{display: 'block', marginBottom: '4px', fontSize: '14px' }}> Enter your username</span>
+              <div style={{ maxWidth: '100%' }}>
+               <form onSubmit={handleUsernameSubmit} style={{ padding: '0 0px', marginTop: '16px', marginBottom: '16px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto', width: '90%', display: 'flex', alignItems: 'flex-end',  justifyContent: 'center'}}>
+              <label style={{ alignSelf: 'center',  fontSize: '10px', display: 'flex', alignItems: 'center', width: '64px', paddingRight: '8px',  maxWidth: '100%', textAlign: 'right' }}>
+              <span>Enter Username</span>
+              </label>
                 <input
+                  autoComplete='off'
                   type="text"
                   name="username"
                   required
                   value={usernameInput}
                   onChange={(e) => setUsernameInput(e.target.value)}
-                  style={{ maxWIdth: '100%', fontSize: '24px', border: '1px solid currentColor', background: 'transparent',  color: 'inherit', fontWeight: 900, padding: '8px',  }}
+                  style={{ textTransform:'uppercase', maxWidth: '100%', width: '12ch',fontSize: '24px', border: '1px solid currentColor', background: 'transparent',  color: 'inherit', fontWeight: 900, padding: '8px',  }}
                 />
-              </label>
-              <button type="submit" style={{ appearance: 'none', WebkitAppearance: 'none', fontWeight: 900, background: 'limegreen', padding: '8px', border: 0  }}>Submit</button>
-              <button onClick={() => setIsUsernameModalOpen(false)} style={{ appearance: 'none', WebkitAppearance: 'none', padding: '8px', background: 'transparent', borderWidth:'0', color: 'gray' }}>Cancel</button>
+              <button type="submit" style={{ appearance: 'none', WebkitAppearance: 'none', fontWeight: 900, background: 'yellow', padding: '8px 12px', border: 0, height: '46px', fontSize: '12px',  }}>Submit</button>
             </form>
               </div>
             )}
-            <small style={{ fontSize: "10px", color: "#777" }}>
-              This game has been played {count} times
-            </small>
-        <div style={{ marginTop: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center',  }}>
-            <p style={{ margin: 0}}>Continue?</p>
+        <div style={{ width: '48%', padding: "4px 0px 4px 4px", margin: '0 16px', maxWidth: '256px', outline: '1px solid transparent', alignSelf: 'center', color: 'limegreen', display: 'flex', alignItems: 'center', justifyContent: 'space-between',  }}>
+            <p style={{ margin: 0, fontSize: '14px', }}>Continue?</p>
             <button
-              style={{ appearance: 'none', WebkitAppearance: 'none', display: "inline-block", marginLeft: '32px', marginRight: "16px", background: 'yellow', color :'black', border: 0,   }}
+              style={{ appearance: 'none', WebkitAppearance: 'none', display: "inline-block", marginLeft: 'auto', marginRight: "0px", background: 'limegreen', color :'black', border: 0,   }}
               onClick={() => window.location.reload()}
             >
               Yes
             </button>
-            <button style={{ appearance: 'none',WebkitAppearance: 'none', border: 0, boxShadow: '0 0 0 1px currentColor', background: 'transparent', color: 'yellow' }} >No</button>
+            <button style={{ appearance: 'none',WebkitAppearance: 'none', border: 0, boxShadow: '0 0 0 1px transparent', background: 'transparent', color: 'limegreen', padding: '0 16px' }} >No</button>
         </div>
           </div>
+        </div>
       <section style={{ marginBottom: '8px' }}>
-      <h4 style={{ marginTop: '32px', color: 'white', fontWeight: 400, fontSize: '10px' }}>High Scores</h4>
-      <div style={{ maxWidth: '512px', margin: '0 auto 16px auto', color: 'hotpink', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', padding: '0 16px'}}>
+      <div style={{ maxWidth: '512px', margin: '0 auto 20px auto', color: 'gold', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', padding: '0 16px'}}>
 
         <article>
-        <h5 style={{ margin: 0 }}>Today</h5>
+        <h5 style={{ margin: 0, fontSize: '12px', background: 'gold', color: 'black' }}>Today</h5>
         {dailyScores.length > 0 &&
           <ol style={{fontSize: '12px', padding: 0, margin: '16px 0 0 0', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '100%' }}>
             {dailyScores.slice(0,10).map((score, index) => (
               <li key={index} style={{ margin: 0, fontSize: '10px', width: '100%',padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between', }}>
               <b style={{ display: 'inline-block', marginRight: '4px' }}>
-              <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left' }}>{index+1}</span>
+              <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left', opacity: .5 }}>{index+1}</span>
                 {score.user}
               </b> 
                   <code>{score.score}</code>
@@ -308,13 +308,13 @@ useEffect(() => {
           </ol>
         }
         </article>
-      <article style={{ color: 'cyan' }}>
-        <h5 style={{ margin: 0 }}>All-time</h5>
+      <article style={{ color: 'gold' }}>
+        <h5 style={{ margin: 0, fontSize: '12px', background: 'gold', color: 'black' }}>All-time</h5>
         <ol style={{fontSize: '12px', padding: 0, margin: '16px 0 0 0', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '100%' }}>
           {allTimeScores.slice(0,10).map((score, index) => (
             <li key={index} style={{ fontSize: '10px', padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px' }}>
             <b style={{ display: 'inline-block', marginRight: '4px' }}>
-              <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left' }}>{index+1}</span>
+              <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left', opacity: .5 }}>{index+1}</span>
             {score.user}
 
             </b> 
@@ -325,6 +325,9 @@ useEffect(() => {
         </article>
         </div>
         </section>
+            <small style={{ fontSize: "10px", color: "#777", position: 'absolute', bottom: 0, right: 0, left: 0, padding: '6px 0' }}>
+              {count} plays
+            </small>
         </div>
       )}
     </div>
