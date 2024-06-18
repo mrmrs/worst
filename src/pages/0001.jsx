@@ -1,19 +1,67 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../App.css";
-import GameArea from "../components/0001.jsx";
+
+const emojiMovies = [
+  { emojis: "🐭🍝", title: "Ratatouille" },
+  { emojis: "👻🖼️", title: "Ghostbusters" },
+  { emojis: "🛏️🐴", title: "The Godfather" },
+  { emojis: "💼🍔", title: "Pulp Fiction" },
+  { emojis: "🐢🍕", title: "Teenage Mutant Ninja Turtles" },
+  { emojis: "🦕🧬", title: "Jurassic Park" },
+  { emojis: "⚡️🦉", title: "Harry Potter" },
+  { emojis: "🚢🧊", title: "Titanic" },
+  { emojis: "👑🦁", title: "The Lion King" },
+  { emojis: "🦇👨", title: "Batman" },
+  { emojis: "👽📞🏠", title: "E.T. the Extra-Terrestrial" },
+  { emojis: "👽🇺", title: "Independence Day" },
+  { emojis: "🧟🎡", title: "Zombieland" },
+  { emojis: "👻🚫", title: "Ghostbusters" },
+  { emojis: "🐧🕺", title: "Happy Feet" },
+  { emojis: "🔍🐠", title: "Finding Nemo" },
+  { emojis: "👩🚀🪐", title: "Gravity" },
+  { emojis: "🌽🚀📚", title: "Interstellar" },
+  { emojis: "🐇🥋", title: "The Matrix" },
+  { emojis: "🔥📖", title: "Fahrenheit 451" },
+  { emojis: "🧙🔮", title: "Doctor Strange" },
+  { emojis: "🧜🎶", title: "The Little Mermaid" },
+  { emojis: "🤠🤖", title: "Toy Story" },
+  { emojis: "🧸🍯🐅🫏", title: "Winnie the Pooh" },
+  { emojis: "🔨⚡", title: "Thor" },
+  { emojis: "💃🐺", title: "Dances with Wolves" },
+  { emojis: "🚀🌕", title: "Apollo 13" },
+  { emojis: "💀🎁", title: "Se7en" },
+  { emojis: "🚢🧊", title: "Titanic" },
+  { emojis: "🎤🧛", title: "Interview with the Vampire" },
+  { emojis: "🕴️🚢💥🔍", title: "The Usual Suspects" },
+  { emojis: "💎🥊🐖🚚", title: "Snatch" },
+  { emojis: "✈️", title: "Airplane" },
+  { emojis: "⛳️🧨", title: "Caddyshack" },
+  { emojis: "👀👻", title: "The Sixth Sense" },
+  { emojis: "🎃", title: "Halloween" },
+  { emojis: "🌪️👠🦁", title: "The Wizard of Oz" },
+  { emojis: "👽🐈", title: "Alien" },
+  { emojis: "👽👽", title: "Aliens" },
+  { emojis: "🎶☔️", title: "Singin' in the Rain" },
+];
+
+
+const shuffleArray = (array) => {
+  let shuffled = array.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
 
 const App = () => {
   const [score, setScore] = useState(0);
   const [timeTaken, setTimeTaken] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [count, setCount] = useState(0);
-  const [username, setUsername] = useState(
-    localStorage.getItem("username") || "",
-  );
+  const [username, setUsername] = useState(localStorage.getItem("username") || "");
   const [usernameInput, setUsernameInput] = useState("");
-  const [highScore, setHighScore] = useState(
-    parseInt(localStorage.getItem("highScore"), 10) || 0,
-  );
+  const [highScore, setHighScore] = useState(parseInt(localStorage.getItem("highScore"), 30) || 0);
   const [isNewHighScore, setIsNewHighScore] = useState(false);
   const [inputMethod, setInputMethod] = useState("click");
   const [dailyScores, setDailyScores] = useState([]);
@@ -24,29 +72,29 @@ const App = () => {
   });
   const startTime = useRef(Date.now());
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
+  const [currentEmojiIndex, setCurrentEmojiIndex] = useState(Math.floor(Math.random() * emojiMovies.length));
+  const [userGuess, setUserGuess] = useState("");
+  const [timeLeft, setTimeLeft] = useState(30);
+  const [lastGuessResult, setLastGuessResult] = useState(null);
+  const [shuffledMovies, setShuffledMovies] = useState(shuffleArray(emojiMovies));
+  const [pointsAnimation, setPointsAnimation] = useState(null);
 
 
-  // Counts how many times the game is played to completion
-  const durableObjectName = "WORST_GAME_TEST";
+  const durableObjectName = "WORST_GAME_0001";
+  
   const fetchCount = async () => {
     try {
-      const response = await fetch(
-        `https://ts-gen-count.adam-f8f.workers.dev/?name=${durableObjectName}`,
-      );
+      const response = await fetch(`https://ts-gen-count.adam-f8f.workers.dev/?name=${durableObjectName}`);
       const data = await response.text();
       setCount(data);
     } catch (error) {
       console.error("Error fetching count:", error);
     }
   };
+
   const handleIncrement = async () => {
     try {
-      await fetch(
-        `https://ts-gen-count.adam-f8f.workers.dev/increment?name=${durableObjectName}`,
-        {
-          method: "POST",
-        },
-      );
+      await fetch(`https://ts-gen-count.adam-f8f.workers.dev/increment?name=${durableObjectName}`, { method: "POST" });
       fetchCount();
     } catch (error) {
       console.error("Error incrementing count:", error);
@@ -57,116 +105,68 @@ const App = () => {
     setUsernameInput(e.target.value);
   };
 
-const handleButtonClick = () => {
-  if (!gameOver) {
-    const endTime = Date.now();
-    const calculatedTimeTaken = endTime - startTime.current;  // Calculate it once and use this local constant
-    setTimeTaken(calculatedTimeTaken);  // Still set it for any other needs
-    setScore(calculatedTimeTaken);
-    setGameOver(true);
-    handleIncrement();
-
-    // Check if new score is higher than the high score directly using calculatedTimeTaken
-    if (calculatedTimeTaken > highScore) {
-      localStorage.setItem("highScore", calculatedTimeTaken);
-      setHighScore(calculatedTimeTaken);
-      setIsNewHighScore(true); // Set the flag to true if it's a new high score
-    } else {
-      setIsNewHighScore(false); // Reset the flag if not a high score
+  const handleUsernameSubmit = (e) => {
+    e.preventDefault();
+    const newUsername = e.target.username.value;
+    if (newUsername) {
+      localStorage.setItem("username", newUsername);
+      setUsername(newUsername);
+      setIsUsernameModalOpen(false);
+      submitScore({ user: newUsername, score: score.toFixed(3), timeTaken: timeTaken }, 'daily');
     }
+  };
 
-    const scoreData = {
-      user: username,
-      score: calculatedTimeTaken,
-      timeTaken: calculatedTimeTaken,
-    };
-
-    if(!username) {
-      setIsUsernameModalOpen(true);
-    } else {
-      submitScore(scoreData, 'daily');  // Now submitting the actual calculated time
-    }
-  }
-};
-
-const handleUsernameSubmit = (e) => {
-  e.preventDefault(); // Prevent default form submission behavior
-  const newUsername = e.target.username.value;
-  if (newUsername) {
-    localStorage.setItem("username", newUsername);
-    setUsername(newUsername);
-    setIsUsernameModalOpen(false); // Close the modal
-
-    // Submit the score now that the username is set
-    submitScore({
-      user: newUsername,
-      score: score,
-      timeTaken: timeTaken,
-    }, 'daily');
-  }
-};
-
-
-const submitScore = async (scoreData, category) => {
+  const submitScore = async (scoreData, category) => {
     const dataWithCategory = { ...scoreData, category };
     try {
-        const response = await fetch('https://games-0001.adam-f8f.workers.dev/submit-score', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dataWithCategory)
-        });
+      const response = await fetch('https://games-0001.adam-f8f.workers.dev/submit-score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataWithCategory),
+      });
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
-        }
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
+      }
 
-        console.log("Score submitted successfully");
-        
-        // Refetch scores after successful submission
-        const fetchedDailyScores = await fetchScores('daily');
-        const fetchedAllTimeScores = await fetchScores('all-time');
-        setDailyScores(fetchedDailyScores);
-        setAllTimeScores(fetchedAllTimeScores);
+      const fetchedDailyScores = await fetchScores('daily');
+      const fetchedAllTimeScores = await fetchScores('all-time');
+      setDailyScores(fetchedDailyScores);
+      setAllTimeScores(fetchedAllTimeScores);
     } catch (error) {
-        console.error("Failed to submit score:", error);
+      console.error("Failed to submit score:", error);
     }
-};
+  };
 
-const fetchScores = async (category) => {
-  // The category should be either 'daily' or 'all-time'
-  const url = `https://games-0001.adam-f8f.workers.dev/get-scores?category=${category}`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  const fetchScores = async (category) => {
+    const url = `https://games-0001.adam-f8f.workers.dev/get-scores?category=${category}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const scores = await response.json();
+      return scores;
+    } catch (error) {
+      console.error("Failed to fetch scores:", error);
+      return [];
     }
-    const scores = await response.json();
-    return scores;
-  } catch (error) {
-    console.error("Failed to fetch scores:", error);
-    return [];
-  }
-};
+  };
 
   useEffect(() => {
     localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
   }, [gameHistory]);
 
-useEffect(() => {
-  const loadScores = async () => {
-    const fetchedDailyScores = await fetchScores('daily');
-    const fetchedAllTimeScores = await fetchScores('all-time');
-    setDailyScores(fetchedDailyScores);
-    setAllTimeScores(fetchedAllTimeScores);
-  };
-
-  loadScores();
-}, []);
-
+  useEffect(() => {
+    const loadScores = async () => {
+      const fetchedDailyScores = await fetchScores('daily');
+      const fetchedAllTimeScores = await fetchScores('all-time');
+      setDailyScores(fetchedDailyScores);
+      setAllTimeScores(fetchedAllTimeScores);
+    };
+    loadScores();
+  }, []);
 
   useEffect(() => {
     fetchCount();
@@ -174,154 +174,202 @@ useEffect(() => {
       if (!gameOver) {
         const currentTime = Date.now();
         const timeTaken = currentTime - startTime.current;
-        setScore(timeTaken);
         const newHistory = [...gameHistory, { score: timeTaken, timeTaken }];
         setGameHistory(newHistory);
+        setTimeLeft((prev) => prev - 1);
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          setGameOver(true);
+          handleIncrement();
+          submitScore({ user: username, score: score, timeTaken: 30 - timeLeft }, 'daily');
+        }
       }
-    }, 1);
+    }, 1000);
     return () => clearInterval(timer);
-  }, [gameOver]);
-
-
+  }, [gameOver, timeLeft, gameHistory, score]);
 
   useEffect(() => {
-    if (
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0 ||
-      navigator.msMaxTouchPoints > 0
-    ) {
+    if ("ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) {
       setInputMethod("tap");
     } else {
       setInputMethod("click");
     }
   }, []);
 
+
+// Helper function to shuffle the movies
+
+const levenshteinDistance = (a, b) => {
+  const matrix = [];
+
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+};
+
+const calculateAccuracy = (guess, title) => {
+  if (!guess) return 0;
+
+  const distance = levenshteinDistance(guess.toLowerCase(), title.toLowerCase());
+  const maxLength = Math.max(guess.length, title.length);
+  const accuracy = ((maxLength - distance) / maxLength) * 100;
+
+  console.log(`Guess: "${guess}", Title: "${title}", Distance: ${distance}, Max Length: ${maxLength}, Accuracy: ${accuracy}`);
+
+  return Math.max(0, Math.min(100, accuracy));
+};
+
+useEffect(() => {
+  // This code runs only when currentEmojiIndex changes
+  const currentEmoji = shuffledMovies[currentEmojiIndex];
+  console.log(`Now guessing: ${currentEmoji.title}`);
+}, [currentEmojiIndex]);
+
+
+const handleGuessSubmit = (e) => {
+  e.preventDefault();
+  const endTime = Date.now();
+  const calculatedTimeTaken = endTime - startTime.current;
+  setTimeTaken(calculatedTimeTaken);
+
+  const currentEmoji = shuffledMovies[currentEmojiIndex];
+  const accuracyScore = calculateAccuracy(userGuess, currentEmoji.title);
+  const speedScore = Math.max(0, 100 - calculatedTimeTaken / 100000);
+  const totalScore = accuracyScore > 50 ? accuracyScore + speedScore / 8 : speedScore / 10 - 11; // Penalize incorrect guesses
+
+  setScore(score + totalScore);
+  setLastGuessResult({ accuracy: accuracyScore.toFixed(2), time: calculatedTimeTaken.toFixed(3) });
+  setPointsAnimation(totalScore);
+  setTimeout(() => setPointsAnimation(null), 1000); // Reset animation after 1 second
+  setCurrentEmojiIndex((prev) => (prev + 1) % shuffledMovies.length);
+  setUserGuess("");
+};
+
   return (
-    <div
-      className="text-color background-color"
-      style={{
-        textAlign: "center",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        overflow: 'hidden',
-      }}
-    >
-    <div
-    style={{
-      backgroundImage: 'repeating-linear-gradient(135deg, transparent 0px, transparent 8px, currentcolor 8px, currentcolor 24px)', color: 'black'
-    }}
-    ><GameArea /></div>
-      {gameOver && (
-        <div
-          id="game-over-modal"
-          style={{
-            textTransform: 'uppercase',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            width: "100%",
-            height: "100%",
-            background: "black",
-            color: "yellow",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            overflow: 'hidden', 
-          }}
-        >
-          <div style={{ textAlign: "center", paddingTop: '16px', height: '100%'  }}>
-            <p style={{ color: "red", fontSize: "16px", fontWeight: "400", margin: '0 0 16px 0'  }}>
-              GAME OVER
-            </p>
-        <div style={{  display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', justifyContent: 'center'  }}>
-        <div style={{ background: 'white', color: 'black', padding: '8px 24px', width: 'auto', maxWidth: '640px', transform: 'rotate(-4deg)', marginBottom: '16px' }}>
-            <div>
-              {!isNewHighScore && <p style={{ fontSize: '10px', margin: '0 0 2px 0', }}>SCORE</p>}
-              {isNewHighScore && (
-                <p style={{ display: 'flex', alignItems: 'center', fontSize: '10px', margin: '0 0 2px 0', textAlign: 'center', justifyContent: 'center' }}>NEW HIGH SCORE!</p>
-              )}
-              <p style={{ fontWeight: "bold", fontSize: "64px", margin: '8px 0 0 0', lineHeight: 0.9, }}>
-                {score}
-              </p>
-          </div>
-        </div>
-            {username ? (
-              <p></p>
-            ) : (
-              <div style={{ maxWidth: '100%' }}>
-               <form onSubmit={handleUsernameSubmit} style={{ padding: '0 0px', marginTop: '16px', marginBottom: '16px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto', width: '90%', display: 'flex', alignItems: 'flex-end',  justifyContent: 'center'}}>
-              <label style={{ alignSelf: 'center',  fontSize: '10px', display: 'flex', alignItems: 'center', width: '64px', paddingRight: '8px',  maxWidth: '100%', textAlign: 'right' }}>
-              <span>Enter Username</span>
-              </label>
-                <input
-                  autoComplete='off'
-                  type="text"
-                  name="username"
-                  required
-                  value={usernameInput}
-                  onChange={(e) => setUsernameInput(e.target.value)}
-                  style={{ textTransform:'uppercase', maxWidth: '100%', width: '12ch',fontSize: '24px', border: '1px solid currentColor', background: 'transparent',  color: 'inherit', fontWeight: 900, padding: '8px',  }}
-                />
-              <button type="submit" style={{ appearance: 'none', WebkitAppearance: 'none', fontWeight: 900, background: 'yellow', padding: '8px 12px', border: 0, height: '46px', fontSize: '12px',  }}>Submit</button>
+    <div className="text-color background-color" style={{ textAlign: "center", height: "100vh", overflow: 'hidden' }}>
+      <div style={{ position: "relative" }}>
+        {gameOver ? (
+          <button onClick={() => window.location.reload()} className="beacon animated-button">
+            Restart
+          </button>
+        ) : (
+          <>
+          <p>Time Left: {timeLeft}s</p>
+            <p>Score: {score.toFixed(2)}</p>
+            <div style={{ fontSize: '64px' }}>
+              {shuffledMovies[currentEmojiIndex].emojis}
+            </div>
+            <form onSubmit={handleGuessSubmit}>
+              <input type="text" value={userGuess} onChange={(e) => setUserGuess(e.target.value)} />
+              <button type="submit">Guess</button>
             </form>
+  {lastGuessResult && (
+              <div>
+                <p>Accuracy: {lastGuessResult.accuracy}%</p>
+                <p>Time Taken: {lastGuessResult.time}ms</p>
               </div>
             )}
-        <div style={{ width: '48%', padding: "4px 0px 4px 4px", margin: '0 16px', maxWidth: '256px', outline: '1px solid transparent', alignSelf: 'center', color: 'limegreen', display: 'flex', alignItems: 'center', justifyContent: 'space-between',  }}>
-            <p style={{ margin: 0, fontSize: '14px', }}>Continue?</p>
-            <button
-              style={{ appearance: 'none', WebkitAppearance: 'none', display: "inline-block", marginLeft: 'auto', marginRight: "0px", background: 'limegreen', color :'black', border: 0,   }}
-              onClick={() => window.location.reload()}
-            >
-              Yes
-            </button>
-            <button style={{ appearance: 'none',WebkitAppearance: 'none', border: 0, boxShadow: '0 0 0 1px transparent', background: 'transparent', color: 'limegreen', padding: '0 16px' }} >No</button>
-        </div>
+          </>
+        )}
+      </div>
+    {pointsAnimation !== null && (
+  <div className="points-animation">
+    +{pointsAnimation.toFixed(2)} points
+  </div>
+)}
+      {gameOver && (
+        <div id="game-over-modal" style={{ textTransform: 'uppercase', position: "absolute", top: 0, left: 0, bottom: 0, right: 0, width: "100%", height: "100%", background: "black", color: "yellow", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: 'hidden' }}>
+          <div style={{ textAlign: "center", paddingTop: '16px', height: '100%' }}>
+            <p style={{ color: "red", fontSize: "16px", fontWeight: "400", margin: '0 0 16px 0' }}>
+              GAME OVER
+            </p>
+            <div style={{ display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
+              <div style={{ background: 'white', color: 'black', padding: '8px 24px', width: 'auto', maxWidth: '640px', transform: 'rotate(-4deg)', marginBottom: '16px' }}>
+                <div>
+                  {!isNewHighScore && <p style={{ fontSize: '10px', margin: '0 0 2px 0', }}>SCORE</p>}
+                  {isNewHighScore && (
+                    <p style={{ display: 'flex', alignItems: 'center', fontSize: '10px', margin: '0 0 2px 0', textAlign: 'center', justifyContent: 'center' }}>NEW HIGH SCORE!</p>
+                  )}
+                  <p style={{ fontWeight: "bold", fontSize: "64px", margin: '8px 0 0 0', lineHeight: 0.9, }}>
+                    {score.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+              {username ? (
+                <p></p>
+              ) : (
+                <div style={{ maxWidth: '100%' }}>
+                  <form onSubmit={handleUsernameSubmit} style={{ padding: '0 0px', marginTop: '16px', marginBottom: '16px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto', width: '90%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <label style={{ alignSelf: 'center', fontSize: '10px', display: 'flex', alignItems: 'center', width: '64px', paddingRight: '8px', maxWidth: '100%', textAlign: 'right' }}>
+                      <span>Enter Username</span>
+                    </label>
+                    <input autoComplete='off' type="text" name="username" required value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} style={{ textTransform: 'uppercase', maxWidth: '100%', width: '12ch', fontSize: '24px', border: '1px solid currentColor', background: 'transparent', color: 'inherit', fontWeight: 900, padding: '8px', }} />
+                    <button type="submit" style={{ appearance: 'none', WebkitAppearance: 'none', fontWeight: 900, background: 'yellow', padding: '8px 12px', border: 0, height: '46px', fontSize: '12px', }}>Submit</button>
+                  </form>
+                </div>
+              )}
+              <div style={{ width: '48%', padding: "4px 0px 4px 4px", margin: '0 16px', maxWidth: '256px', outline: '1px solid transparent', alignSelf: 'center', color: 'limegreen', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <p style={{ margin: 0, fontSize: '14px', }}>Continue?</p>
+                <button style={{ appearance: 'none', WebkitAppearance: 'none', display: "inline-block", marginLeft: 'auto', marginRight: "0px", background: 'limegreen', color: 'black', border: 0, }} onClick={() => window.location.reload()}>
+                  Yes
+                </button>
+                <button style={{ appearance: 'none', WebkitAppearance: 'none', border: 0, boxShadow: '0 0 0 1px transparent', background: 'transparent', color: 'limegreen', padding: '0 16px' }} >No</button>
+              </div>
+            </div>
           </div>
-        </div>
-      <section style={{ marginBottom: '8px' }}>
-      <div style={{ maxWidth: '512px', margin: '0 auto 20px auto', color: 'gold', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', padding: '0 16px'}}>
-
-        <article>
-        <h5 style={{ margin: 0, fontSize: '12px', background: 'gold', color: 'black' }}>Today</h5>
-        {dailyScores.length > 0 &&
-          <ol style={{fontSize: '12px', padding: 0, margin: '16px 0 0 0', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '100%' }}>
-            {dailyScores.slice(0,10).map((score, index) => (
-              <li key={index} style={{ margin: 0, fontSize: '10px', width: '100%',padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between', }}>
-              <b style={{ display: 'inline-block', marginRight: '4px' }}>
-              <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left', opacity: .5 }}>{index+1}</span>
-                {score.user}
-              </b> 
-                  <code>{score.score}</code>
-              </li>
-            ))}
-          </ol>
-        }
-        </article>
-      <article style={{ color: 'gold' }}>
-        <h5 style={{ margin: 0, fontSize: '12px', background: 'gold', color: 'black' }}>All-time</h5>
-        <ol style={{fontSize: '12px', padding: 0, margin: '16px 0 0 0', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '100%' }}>
-          {allTimeScores.slice(0,10).map((score, index) => (
-            <li key={index} style={{ fontSize: '10px', padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px' }}>
-            <b style={{ display: 'inline-block', marginRight: '4px' }}>
-              <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left', opacity: .5 }}>{index+1}</span>
-            {score.user}
-
-            </b> 
-                <code>{score.score}</code>
-            </li>
-          ))}
-        </ol>
-        </article>
-        </div>
-        </section>
-            <small style={{ fontSize: "10px", color: "#777", position: 'absolute', bottom: 0, right: 0, left: 0, padding: '6px 0' }}>
-              {count} plays
-            </small>
+          <section style={{ marginBottom: '8px' }}>
+            <div style={{ maxWidth: '512px', margin: '0 auto 20px auto', color: 'gold', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', padding: '0 16px' }}>
+              <article>
+                <h5 style={{ margin: 0, fontSize: '12px', background: 'gold', color: 'black' }}>Today</h5>
+                {dailyScores.length > 0 &&
+                  <ol style={{ fontSize: '12px', padding: 0, margin: '16px 0 0 0', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '100%' }}>
+                    {dailyScores.slice(0, 10).map((score, index) => (
+                      <li key={index} style={{ margin: 0, fontSize: '10px', width: '100%', padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <b style={{ display: 'inline-block', marginRight: '4px' }}>
+                          <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left', opacity: .5 }}>{index + 1}</span>
+                          {score.user}
+                        </b>
+                        <code>{score.score}</code>
+                      </li>
+                    ))}
+                  </ol>
+                }
+              </article>
+              <article style={{ color: 'gold' }}>
+                <h5 style={{ margin: 0, fontSize: '12px', background: 'gold', color: 'black' }}>All-time</h5>
+                <ol style={{ fontSize: '12px', padding: 0, margin: '16px 0 0 0', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '100%' }}>
+                  {allTimeScores.slice(0, 10).map((score, index) => (
+                    <li key={index} style={{ fontSize: '10px', padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px' }}>
+                      <b style={{ display: 'inline-block', marginRight: '4px' }}>
+                        <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left', opacity: .5 }}>{index + 1}</span>
+                        {score.user}
+                      </b>
+                      <code>{score.score}</code>
+                    </li>
+                  ))}
+                </ol>
+              </article>
+            </div>
+          </section>
+          <small style={{ fontSize: "10px", color: "#777", position: 'absolute', bottom: 0, right: 0, left: 0, padding: '6px 0' }}>
+            {count} plays
+          </small>
         </div>
       )}
     </div>
