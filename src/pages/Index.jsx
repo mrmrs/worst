@@ -22,6 +22,8 @@ const App = () => {
     return saved ? JSON.parse(saved) : [];
   });
   const startTime = useRef(Date.now());
+  const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
+
 
   // Counts how many times the game is played to completion
   const durableObjectName = "WORST_GAME_HOME";
@@ -78,18 +80,30 @@ const handleButtonClick = () => {
       timeTaken: calculatedTimeTaken,
     };
 
-    submitScore(scoreData, 'daily');  // Now submitting the actual calculated time
+    if(!username) {
+      setIsUsernameModalOpen(true);
+    } else {
+      submitScore(scoreData, 'daily');  // Now submitting the actual calculated time
+    }
   }
 };
 
-  const handleUsernameSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    const newUsername = e.target.username.value;
-    if (newUsername) {
-      localStorage.setItem("username", newUsername);
-      setUsername(newUsername);
-    }
-  };
+const handleUsernameSubmit = (e) => {
+  e.preventDefault(); // Prevent default form submission behavior
+  const newUsername = e.target.username.value;
+  if (newUsername) {
+    localStorage.setItem("username", newUsername);
+    setUsername(newUsername);
+    setIsUsernameModalOpen(false); // Close the modal
+
+    // Submit the score now that the username is set
+    submitScore({
+      user: newUsername,
+      score: score,
+      timeTaken: timeTaken,
+    }, 'daily');
+  }
+};
 
 
 const submitScore = async (scoreData, category) => {
@@ -109,6 +123,12 @@ const submitScore = async (scoreData, category) => {
         }
 
         console.log("Score submitted successfully");
+        
+        // Refetch scores after successful submission
+        const fetchedDailyScores = await fetchScores('daily');
+        const fetchedAllTimeScores = await fetchScores('all-time');
+        setDailyScores(fetchedDailyScores);
+        setAllTimeScores(fetchedAllTimeScores);
     } catch (error) {
         console.error("Failed to submit score:", error);
     }
@@ -205,6 +225,7 @@ useEffect(() => {
         <div
           id="game-over-modal"
           style={{
+            textTransform: 'uppercase',
             position: "fixed",
             top: 0,
             left: 0,
@@ -222,69 +243,82 @@ useEffect(() => {
             <p style={{ color: "red", fontSize: "48px", fontWeight: "bold" }}>
               GAME OVER
             </p>
-            {!isNewHighScore && <p style={{ color: "white" }}>SCORE</p>}
+            {!isNewHighScore && <p style={{ color: "white", fontSize: '10px', margin: 0, }}>SCORE</p>}
             {isNewHighScore && (
-              <p style={{ color: "white" }}>NEW HIGH SCORE!</p>
+              <p style={{ color: "white", fontSize: '10px', margin: 0 }}>NEW HIGH SCORE!</p>
             )}
             {username ? (
               <p></p>
             ) : (
-              <form onSubmit={handleUsernameSubmit}>
+              <div>
+               <form onSubmit={handleUsernameSubmit} style={{ padding: '16px', marginBottom: '16px'}}>
+              <label style={{ display: 'block', marginBottom: '4px' }}>
+              <span style={{display: 'block', marginBottom: '4px', }}> Enter your username</span>
                 <input
-                  style={{
-                    appearance: "none",
-                    WebKitAppearance: "none",
-                    borderRadius: 0,
-                    border: "1px solid white",
-                    color: "white",
-                    background: "transparent",
-                    padding: "8px",
-                  }}
                   type="text"
                   name="username"
-                  placeholder="Enter your username"
                   required
                   value={usernameInput}
-                  onChange={handleUsernameChange}
+                  onChange={(e) => setUsernameInput(e.target.value)}
+                  style={{ fontSize: '32px', border: '1px solid currentColor', background: 'transparent',  color: 'inherit', fontWeight: 900, padding: '8px',  }}
                 />
-                <button
-                  style={{
-                    border: "1px solid currentColor",
-                    background: "transparent",
-                    color: "white",
-                    padding: "8px",
-                    marginLeft: "4px",
-                  }}
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </form>
+              </label>
+              <button type="submit" style={{ appearance: 'none', WebkitAppearance: 'none', fontWeight: 900, background: 'limegreen', padding: '8px', border: 0  }}>Submit</button>
+              <button onClick={() => setIsUsernameModalOpen(false)} style={{ appearance: 'none', WebkitAppearance: 'none', padding: '8px', background: 'transparent', borderWidth:'0', color: 'gray' }}>Cancel</button>
+            </form>
+              </div>
             )}
-            <p style={{ fontWeight: "bold", fontSize: "96px", margin: 0 }}>
+            <p style={{ fontWeight: "bold", fontSize: "96px", margin: 0, lineHeight: 0.9 }}>
               {score}
             </p>
             <small style={{ fontSize: "10px", color: "#777" }}>
               This game has been played {count} times
             </small>
-            <p style={{ marginTop: "64px" }}>Continue?</p>
+        <div style={{ marginTop: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center',  }}>
+            <p style={{ margin: 0}}>Continue?</p>
             <button
-              style={{ display: "inline-block", marginRight: "32px" }}
+              style={{ appearance: 'none', WebkitAppearance: 'none', display: "inline-block", marginLeft: '32px', marginRight: "16px", background: 'yellow', color :'black', border: 0,   }}
               onClick={() => window.location.reload()}
             >
               Yes
             </button>
-            <button>No</button>
+            <button style={{ appearance: 'none',WebkitAppearance: 'none', border: 0, boxShadow: '0 0 0 1px currentColor', background: 'transparent', color: 'yellow' }} >No</button>
+        </div>
           </div>
-      <h4>High Scores</h4>
-      <ol style={{fontSize: '12px', padding: 0, marginTop: '32px', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '20dvh' }}>
-        {dailyScores.slice(0,10).map((score, index) => (
-          <li key={index} style={{ fontSize: '10px', minWidth: '192px', padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px' }}>
-              <b style={{ display: 'inline-block', marginRight: '4px' }}>{score.user}</b> 
-              <code>{score.score}</code>
-          </li>
-        ))}
-      </ol>
+      <section>
+      <div style={{ color: 'hotpink' }}>
+        <h4 style={{ marginTop: '48px', color: 'white', fontWeight: 400, fontSize: '10px' }}>High Scores</h4>
+        <h5 style={{ margin: 0 }}>Today</h5>
+        {dailyScores.length > 0 &&
+          <ol style={{fontSize: '12px', padding: 0, marginTop: '16px', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '20dvh' }}>
+            {dailyScores.slice(0,10).map((score, index) => (
+              <li key={index} style={{ fontSize: '10px', minWidth: '192px', padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between', }}>
+              <b style={{ display: 'inline-block', marginRight: '4px' }}>
+              <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left' }}>{index+1}</span>
+                {score.user}
+              </b> 
+                  <code>{score.score}</code>
+              </li>
+            ))}
+          </ol>
+        }
+      </div>
+      <div style={{ color: 'cyan' }}>
+        <h5 style={{ margin: 0 }}>All-time</h5>
+        <ol style={{fontSize: '12px', padding: 0, marginTop: '16px', lineHeight: 1., lineHeight: 1.55, overflow: 'scroll', maxHeight: '20dvh' }}>
+          {allTimeScores.slice(0,10).map((score, index) => (
+            <li key={index} style={{ fontSize: '10px', minWidth: '192px', padding: '2px 0', borderBottom: '1px solid', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px' }}>
+            <b style={{ display: 'inline-block', marginRight: '4px' }}>
+              <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left' }}>{index+1}</span>
+            {score.user}
+
+            </b> 
+                <code>{score.score}</code>
+            </li>
+          ))}
+        </ol>
+      </div>
+        </section>
         </div>
       )}
     </div>

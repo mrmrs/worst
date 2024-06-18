@@ -165,3 +165,7 @@ canvas { background: black; }
 input:focus-visible {
   border-radius: 0!important;
 }
+
+button { 
+  cursor: pointer;
+}
