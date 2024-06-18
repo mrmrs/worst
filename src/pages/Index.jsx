@@ -247,14 +247,16 @@ useEffect(() => {
               GAME OVER
             </p>
         <div style={{  display: 'flex', height: '100%', alignItems: 'center', flexDirection: 'column', justifyContent: 'center'  }}>
-        <div style={{ background: 'gold', color: 'black', padding: '4px 16px' }}>
-            {!isNewHighScore && <p style={{ fontSize: '10px', margin: '0 0 2px 0', }}>SCORE</p>}
-            {isNewHighScore && (
-              <p style={{ fontSize: '10px', margin: '0 0 2px 0',  }}>NEW HIGH SCORE!</p>
-            )}
-            <p style={{ fontWeight: "bold", fontSize: "64px", margin: '8px 0 0 0', lineHeight: 0.9, }}>
-              {score}
-            </p>
+        <div style={{ background: 'white', color: 'black', padding: '8px 24px', width: 'auto', maxWidth: '640px', transform: 'rotate(-4deg)', marginBottom: '16px' }}>
+            <div>
+              {!isNewHighScore && <p style={{ fontSize: '10px', margin: '0 0 2px 0', }}>SCORE</p>}
+              {isNewHighScore && (
+                <p style={{ display: 'flex', alignItems: 'center', fontSize: '10px', margin: '0 0 2px 0', textAlign: 'center', justifyContent: 'center' }}>NEW HIGH SCORE!</p>
+              )}
+              <p style={{ fontWeight: "bold", fontSize: "64px", margin: '8px 0 0 0', lineHeight: 0.9, }}>
+                {score}
+              </p>
+          </div>
         </div>
             {username ? (
               <p></p>
