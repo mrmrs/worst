@@ -21,13 +21,12 @@ const emojiMovies = [
   { emojis: "🌽🚀📚", title: "Interstellar" },
   { emojis: "🐇🥋", title: "The Matrix" },
   { emojis: "🔥📖", title: "Fahrenheit 451" },
-  { emojis: "🧙🔮", title: "Doctor Strange" },
-  { emojis: "🧜🎶", title: "The Little Mermaid" },
+  { emojis: "🧜🦵🦀", title: "The Little Mermaid" },
   { emojis: "🤠🤖", title: "Toy Story" },
+  { emojis: "👽🤠", title: "Cowboys and Aliens" },
   { emojis: "🧸🍯🐅🫏", title: "Winnie the Pooh" },
   { emojis: "🔨⚡", title: "Thor" },
   { emojis: "💃🐺", title: "Dances with Wolves" },
-  { emojis: "🚀🌕", title: "Apollo 13" },
   { emojis: "💀🎁", title: "Se7en" },
   { emojis: "🚢🧊", title: "Titanic" },
   { emojis: "🎤🧛", title: "Interview with the Vampire" },
@@ -41,15 +40,13 @@ const emojiMovies = [
   { emojis: "👽🐈", title: "Alien" },
   { emojis: "👽👽", title: "Aliens" },
   { emojis: "🎶☔️", title: "Singin' in the Rain" },
-  { emojis: "🥵", title: "Heat" },
+  { emojis: "🚑📸☕️🤝", title: "Heat" },
   { emojis: "🏒🏦🍀🍊", title: "The Town" },
-  { emojis: "🏄🏦🪂", title: "Point Break" },
   { emojis: "🏄🏦🪂", title: "Point Break" },
   { emojis: "Ⓜ️", title: "M" },
   { emojis: "🚿🔪🏨", title: "Psycho" },
-  { emojis: "🕵️🔍🔧🪈🔪🏠", title: "Clue" },
-  { emojis: "🏙️🍸🎤🇯", title: "Lost in Translation" },
-  { emojis: "🐰🕒✈️🎭", title: "Donnie Darko" },
+  { emojis: "🕵️🕯️🔧🔪🏠", title: "Clue" },
+  { emojis: "⛳️✈️🕒🐰", title: "Donnie Darko" },
   { emojis: "🎸👸🚗", title: "Wayne's World" },
   { emojis: "🧗👹🕳️🔦", title: "The Descent" },
   { emojis: "🚗📱", title: "Locke" },
@@ -57,6 +54,18 @@ const emojiMovies = [
   { emojis: "🚗📹📰💵", title: "Nightcrawler" },
   { emojis: "🥁", title: "Whiplash" },
   { emojis: "🧛🏠📹😂", title: "What we do in the Shadows" },
+  { emojis: "🐥⚡️🎩🔴", title: "The Prestige" },
+  { emojis: "⚾️🌽👻", title: "Field of Dreams" },
+  { emojis: "✈️📦🏝️🏐", title: "Castaway" },
+  { emojis: "🛗🚌💣🚇", title: "Speed" },
+  { emojis: "🚗🚙🏁", title: "Cars" },
+  { emojis: "🐉❤️", title: "Dragonheart" },
+  { emojis: "🌋", title: "Volcano" },
+  { emojis: "🚀💣☀️", title: "Sunshine" },
+  { emojis: "🐖🕷️🕸️", title: "Charlotte's Web" },
+  { emojis: "🛫🚂🚗", title: "Planes, Trains, and Automobiles" },
+  { emojis: "💵⚾️", title: "Moneyball" },
+  { emojis: "💧🌎🗺️🏝️", title: "Waterworld" },
 ];
 
 
@@ -322,12 +331,22 @@ const handleGuessSubmit = (guess) => {
          {score.toFixed(2)}
           </dd>
           </dl>
- <div style={{ marginTop: '128px', fontSize: '64px', letterSpacing: '8px' }}>
+ <div style={{ marginTop: '96px', fontSize: '64px', letterSpacing: '8px' }}>
       {shuffledMovies[currentEmojiIndex].emojis}
     </div>
-    <div>
+    <div style={{ marginTop: '48px'}}>
       {choices.map((choice, index) => (
-        <button key={index} onClick={() => handleGuessSubmit(choice.title)} style={{ margin: '10px', padding: '10px 20px', appearance: 'none', WebkitAppearance: 'none', border: '1px solid rgba(0,0,0,.1)' }}>
+        <button key={index} onClick={() => handleGuessSubmit(choice.title)} style={{ 
+          backgroundColor: '#222',
+          transition: 'box-shadow .2s ease',
+          boxShadow: '-6px 10px 0px 0px hsl('+Math.random() * 360+'deg,90%,54%)',
+          color: 'white',
+          margin: '10px', 
+          padding: '10px 20px', 
+          appearance: 'none', 
+          WebkitAppearance: 'none', 
+          border: '1px solid rgba(0,0,0,.1)' 
+        }}>
           {choice.title}
         </button>
       ))}
