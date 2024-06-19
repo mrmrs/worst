@@ -13,6 +13,9 @@ const emojiMovies = [
   { emojis: "🚢🧊", title: "Titanic" },
   { emojis: "👑🦁", title: "The Lion King" },
   { emojis: "🦇👨", title: "Batman" },
+  { emojis: "👽🏀", title: "Spacejam" },
+  { emojis: "👽💦", title: "Signs" },
+  { emojis: "👽🔊", title: "Mars Attacks" },
   { emojis: "👽📞🏠", title: "E.T. the Extra-Terrestrial" },
   { emojis: "🧟🎡", title: "Zombieland" },
   { emojis: "👻🚫", title: "Ghostbusters" },
@@ -66,6 +69,7 @@ const emojiMovies = [
   { emojis: "🛫🚂🚗", title: "Planes, Trains, and Automobiles" },
   { emojis: "💵⚾️", title: "Moneyball" },
   { emojis: "💧🌎🗺️🏝️", title: "Waterworld" },
+  { emojis: "🛢️⛪️🎳🥤", title: "There Will Be Blood" },
 ];
 
 
