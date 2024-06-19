@@ -291,7 +291,7 @@ const handleGuessSubmit = (e) => {
               {shuffledMovies[currentEmojiIndex].emojis}
             </div>
             <form onSubmit={handleGuessSubmit} style={{ display: 'flex', alignItems: 'stretch', marginTop: '24px', width: '80%', marginLeft: 'auto', marginRight: 'auto', maxWidth: '520px'  }}>
-              <input type="text" value={userGuess} onChange={(e) => setUserGuess(e.target.value)} style={{ outline: 0,borderRadius:0, width: '100%', padding: "8px 16px", fontSize: '32px', fontWeight: 'bold', margin: 0, appearance: 'none', WebkitAppearance: 'none', border: '1px solid'  }}/>
+              <input type="text" value={userGuess} onChange={(e) => setUserGuess(e.target.value)} style={{ outline: 0,borderRadius:0, width: '100%', padding: "8px 16px", fontSize: '18px', fontWeight: 'bold', margin: 0, appearance: 'none', WebkitAppearance: 'none', border: '1px solid'  }}/>
           <button type="submit" style={{
             margin: 0,
             appearance: 'none',
