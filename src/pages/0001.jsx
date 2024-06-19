@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "../App.css";
 
 const emojiMovies = [
+  { emojis: "🚕🪞", title: "Taxi Driver" },
   { emojis: "🥊", title: "Rocky" },
   { emojis: "🐭🍝", title: "Ratatouille" },
   { emojis: "👻🖼️", title: "Ghostbusters" },
@@ -42,6 +43,7 @@ const emojiMovies = [
   { emojis: "🌪️👠🦁", title: "The Wizard of Oz" },
   { emojis: "👽🐈", title: "Alien" },
   { emojis: "👽👽", title: "Aliens" },
+  { emojis: "🌖⛏️🤖", title: "Moon" },
   { emojis: "🎶☔️", title: "Singin' in the Rain" },
   { emojis: "🚑📸☕️🤝", title: "Heat" },
   { emojis: "🏒🏦🍀🍊", title: "The Town" },
@@ -63,14 +65,16 @@ const emojiMovies = [
   { emojis: "🛗🚌💣🚇", title: "Speed" },
   { emojis: "🚗🚙🏁", title: "Cars" },
   { emojis: "🐉❤️", title: "Dragonheart" },
-  { emojis: "🌋", title: "Volcano" },
+  { emojis: "🌋🌆🌊", title: "Volcano" },
+  { emojis: "🌋🌲🚁", title: "Dante's Peak" },
   { emojis: "🚀💣☀️", title: "Sunshine" },
   { emojis: "🐖🕷️🕸️", title: "Charlotte's Web" },
   { emojis: "🛫🚂🚗", title: "Planes, Trains, and Automobiles" },
   { emojis: "💵⚾️", title: "Moneyball" },
   { emojis: "💧🌎🗺️🏝️", title: "Waterworld" },
   { emojis: "🛢️⛪️🎳🥤", title: "There Will Be Blood" },
-  { emojis: "🛢️⛪️🎳🥤", title: "There Will Be Blood" },
+  { emojis: "🎅🎄🎃💀", title: "The nightmare Before Christmas" },
+  { emojis: "🌀🪚", title: "Saw" },
 ];
 
 
