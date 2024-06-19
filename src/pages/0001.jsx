@@ -66,6 +66,14 @@ const App = () => {
   const [timeTaken, setTimeTaken] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [count, setCount] = useState(0);
+  const [currentEmojiIndex, setCurrentEmojiIndex] = useState(Math.floor(Math.random() * emojiMovies.length));
+  const [userGuess, setUserGuess] = useState("");
+  const [timeLeft, setTimeLeft] = useState(30);
+  const [lastGuessResult, setLastGuessResult] = useState(null);
+  const [shuffledMovies, setShuffledMovies] = useState(shuffleArray(emojiMovies));
+  const [choices, setChoices] = useState([]);
+  const [streak, setStreak] = useState(0);
+
   const [username, setUsername] = useState(localStorage.getItem("username") || "");
   const [usernameInput, setUsernameInput] = useState("");
   const [highScore, setHighScore] = useState(parseInt(localStorage.getItem("highScore"), 30) || 0);
@@ -79,11 +87,6 @@ const App = () => {
   });
   const startTime = useRef(Date.now());
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
-  const [currentEmojiIndex, setCurrentEmojiIndex] = useState(Math.floor(Math.random() * emojiMovies.length));
-  const [userGuess, setUserGuess] = useState("");
-  const [timeLeft, setTimeLeft] = useState(30);
-  const [lastGuessResult, setLastGuessResult] = useState(null);
-  const [shuffledMovies, setShuffledMovies] = useState(shuffleArray(emojiMovies));
   const [pointsAnimation, setPointsAnimation] = useState(null);
 
 
@@ -204,7 +207,6 @@ const App = () => {
   }, []);
 
 
-// Helper function to shuffle the movies
 
 const levenshteinDistance = (a, b) => {
   const matrix = [];
@@ -242,30 +244,54 @@ const calculateAccuracy = (guess, title) => {
   return Math.max(0, Math.min(100, accuracy));
 };
 
+//useEffect(() => {
+//  // This code runs only when currentEmojiIndex changes
+//  const currentEmoji = shuffledMovies[currentEmojiIndex];
+//  console.log(`Now guessing: ${currentEmoji.title}`);
+//}, [currentEmojiIndex]);
+
+const pickChoices = (correctIndex) => {
+  let correctOption = shuffledMovies[correctIndex]; // Get correct answer from shuffledMovies
+  let options = [correctOption]; // Include correct answer
+  let indices = new Set([correctIndex]); // To avoid duplicates
+
+  while (options.length < 8) {
+    const randomIndex = Math.floor(Math.random() * emojiMovies.length);
+    if (!indices.has(randomIndex)) {
+      options.push(emojiMovies[randomIndex]);
+      indices.add(randomIndex);
+    }
+  }
+  return shuffleArray(options); // Shuffle to randomize position of correct answer
+};
+
 useEffect(() => {
-  // This code runs only when currentEmojiIndex changes
-  const currentEmoji = shuffledMovies[currentEmojiIndex];
-  console.log(`Now guessing: ${currentEmoji.title}`);
+  setChoices(pickChoices(currentEmojiIndex));
 }, [currentEmojiIndex]);
 
 
-const handleGuessSubmit = (e) => {
-  e.preventDefault();
+const handleGuessSubmit = (guess) => {
   const endTime = Date.now();
   const calculatedTimeTaken = endTime - startTime.current;
   setTimeTaken(calculatedTimeTaken);
 
-  const currentEmoji = shuffledMovies[currentEmojiIndex];
-  const accuracyScore = calculateAccuracy(userGuess, currentEmoji.title);
-  const speedScore = Math.max(0, 100 - calculatedTimeTaken / 100000);
-  const totalScore = accuracyScore > 50 ? accuracyScore + speedScore / 8 : speedScore / 10 - 11; // Penalize incorrect guesses
+  const correctTitle = shuffledMovies[currentEmojiIndex].title;
+  const isCorrect = guess === correctTitle;
+  const timeScore = Math.max(0, 30 - calculatedTimeTaken / 1000); // Adjust scoring as needed
+  let totalScore = isCorrect ? timeScore : -timeScore; // Penalty for wrong answers
+
+  if (isCorrect) {
+    setStreak(streak + 1);
+    totalScore += 5 * streak; // Streak bonus
+  } else {
+    setStreak(0);
+  }
 
   setScore(score + totalScore);
-  setLastGuessResult({ accuracy: accuracyScore.toFixed(2), time: calculatedTimeTaken.toFixed(3) });
-  setPointsAnimation(totalScore);
-  setTimeout(() => setPointsAnimation(null), 1000); // Reset animation after 1 second
+  setLastGuessResult({ accuracy: isCorrect ? 100 : 0, time: calculatedTimeTaken.toFixed(3) });
   setCurrentEmojiIndex((prev) => (prev + 1) % shuffledMovies.length);
   setUserGuess("");
+  setChoices(pickChoices(currentEmojiIndex)); // Update choices for the new emoji
 };
 
   return (
@@ -287,21 +313,16 @@ const handleGuessSubmit = (e) => {
          {score.toFixed(2)}
           </dd>
           </dl>
-            <div style={{ marginTop: '128px', fontSize: '64px', letterSpacing: '8px' }}>
-              {shuffledMovies[currentEmojiIndex].emojis}
-            </div>
-            <form onSubmit={handleGuessSubmit} style={{ display: 'flex', alignItems: 'stretch', marginTop: '24px', width: '80%', marginLeft: 'auto', marginRight: 'auto', maxWidth: '520px'  }}>
-              <input type="text" value={userGuess} onChange={(e) => setUserGuess(e.target.value)} style={{ outline: 0,borderRadius:0, width: '100%', padding: "8px 16px", fontSize: '18px', fontWeight: 'bold', margin: 0, appearance: 'none', WebkitAppearance: 'none', border: '1px solid'  }}/>
-          <button type="submit" style={{
-            margin: 0,
-            appearance: 'none',
-            WebkitAppearance: 'none',
-              padding: '8px 24px',
-            border: '1px solid black',
-            background: 'black',
-            color: 'white',
-          }}>Guess</button>
-            </form>
+ <div style={{ marginTop: '128px', fontSize: '64px', letterSpacing: '8px' }}>
+      {shuffledMovies[currentEmojiIndex].emojis}
+    </div>
+    <div>
+      {choices.map((choice, index) => (
+        <button key={index} onClick={() => handleGuessSubmit(choice.title)} style={{ margin: '10px', padding: '10px 20px', appearance: 'none', WebkitAppearance: 'none', border: '1px solid rgba(0,0,0,.1)' }}>
+          {choice.title}
+        </button>
+      ))}
+    </div>
           </>
         )}
       </div>
