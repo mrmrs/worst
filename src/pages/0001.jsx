@@ -13,7 +13,6 @@ const emojiMovies = [
   { emojis: "👑🦁", title: "The Lion King" },
   { emojis: "🦇👨", title: "Batman" },
   { emojis: "👽📞🏠", title: "E.T. the Extra-Terrestrial" },
-  { emojis: "👽🇺", title: "Independence Day" },
   { emojis: "🧟🎡", title: "Zombieland" },
   { emojis: "👻🚫", title: "Ghostbusters" },
   { emojis: "🐧🕺", title: "Happy Feet" },
@@ -42,6 +41,13 @@ const emojiMovies = [
   { emojis: "👽🐈", title: "Alien" },
   { emojis: "👽👽", title: "Aliens" },
   { emojis: "🎶☔️", title: "Singin' in the Rain" },
+  { emojis: "🥵", title: "Heat" },
+  { emojis: "🏒🏦🍀🍊", title: "The Town" },
+  { emojis: "🏄🏦🪂", title: "Point Break" },
+  { emojis: "🏄🏦🪂", title: "Point Break" },
+  { emojis: "Ⓜ️", title: "M" },
+  { emojis: "🚿🔪🏨", title: "Psycho" },
+  { emojis: "🕵️🔍🔧🪈🔪🏠", title: "Clue" }
 ];
 
 
