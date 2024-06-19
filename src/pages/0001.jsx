@@ -70,6 +70,7 @@ const emojiMovies = [
   { emojis: "💵⚾️", title: "Moneyball" },
   { emojis: "💧🌎🗺️🏝️", title: "Waterworld" },
   { emojis: "🛢️⛪️🎳🥤", title: "There Will Be Blood" },
+  { emojis: "🛢️⛪️🎳🥤", title: "There Will Be Blood" },
 ];
 
 
@@ -393,8 +394,8 @@ const handleGuessSubmit = (guess) => {
                     <label style={{ alignSelf: 'center', fontSize: '10px', display: 'flex', alignItems: 'center', width: '64px', paddingRight: '8px', maxWidth: '100%', textAlign: 'right' }}>
                       <span>Enter Username</span>
                     </label>
-                    <input autoComplete='off' type="text" name="username" required value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} style={{ textTransform: 'uppercase', maxWidth: '100%', width: '12ch', fontSize: '24px', border: '1px solid currentColor', background: 'transparent', color: 'inherit', fontWeight: 900, padding: '8px', }} />
-                    <button type="submit" style={{ appearance: 'none', WebkitAppearance: 'none', fontWeight: 900, background: 'yellow', padding: '8px 12px', border: 0, height: '46px', fontSize: '12px', }}>Submit</button>
+                    <input autoComplete='off' type="text" name="username" required value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} style={{ textTransform: 'uppercase', maxWidth: '100%', width: '12ch', borderRadius: 0, fontSize: '24px', border: '1px solid currentColor', background: 'transparent', color: 'inherit', fontWeight: 900, padding: '8px', }} />
+                    <button type="submit" style={{ appearance: 'none', WebkitAppearance: 'none', fontWeight: 900, background: 'yellow', color: 'black', padding: '8px 12px', border: 0, height: '46px', fontSize: '12px', border: 0 }}>Submit</button>
                   </form>
                 </div>
               )}
