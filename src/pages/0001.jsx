@@ -16,7 +16,6 @@ const emojiMovies = [
   { emojis: "👽📞🏠", title: "E.T. the Extra-Terrestrial" },
   { emojis: "🧟🎡", title: "Zombieland" },
   { emojis: "👻🚫", title: "Ghostbusters" },
-  { emojis: "🐧🕺", title: "Happy Feet" },
   { emojis: "🔍🐠", title: "Finding Nemo" },
   { emojis: "👩🚀🪐", title: "Gravity" },
   { emojis: "🌽🚀📚", title: "Interstellar" },
@@ -48,7 +47,16 @@ const emojiMovies = [
   { emojis: "🏄🏦🪂", title: "Point Break" },
   { emojis: "Ⓜ️", title: "M" },
   { emojis: "🚿🔪🏨", title: "Psycho" },
-  { emojis: "🕵️🔍🔧🪈🔪🏠", title: "Clue" }
+  { emojis: "🕵️🔍🔧🪈🔪🏠", title: "Clue" },
+  { emojis: "🏙️🍸🎤🇯", title: "Lost in Translation" },
+  { emojis: "🐰🕒✈️🎭", title: "Donnie Darko" },
+  { emojis: "🎸👸🚗", title: "Wayne's World" },
+  { emojis: "🧗👹🕳️🔦", title: "The Descent" },
+  { emojis: "🚗📱", title: "Locke" },
+  { emojis: "🦞❤️", title: "The Lobster" },
+  { emojis: "🚗📹📰💵", title: "Nightcrawler" },
+  { emojis: "🥁", title: "Whiplash" },
+  { emojis: "🧛🏠📹😂", title: "What we do in the Shadows" },
 ];
 
 
@@ -256,7 +264,7 @@ const pickChoices = (correctIndex) => {
   let options = [correctOption]; // Include correct answer
   let indices = new Set([correctIndex]); // To avoid duplicates
 
-  while (options.length < 8) {
+  while (options.length < 6) { // Limit to 6 options
     const randomIndex = Math.floor(Math.random() * emojiMovies.length);
     if (!indices.has(randomIndex)) {
       options.push(emojiMovies[randomIndex]);
