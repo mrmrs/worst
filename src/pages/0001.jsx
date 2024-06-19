@@ -286,16 +286,17 @@ const handleGuessSubmit = (e) => {
          {score.toFixed(2)}
           </dd>
           </dl>
-            <div style={{ fontSize: '64px', letterSpacing: '8px' }}>
+            <div style={{ marginTop: '128px', fontSize: '64px', letterSpacing: '8px' }}>
               {shuffledMovies[currentEmojiIndex].emojis}
             </div>
             <form onSubmit={handleGuessSubmit} style={{ display: 'flex', alignItems: 'stretch', marginTop: '24px', width: '80%', marginLeft: 'auto', marginRight: 'auto', maxWidth: '520px'  }}>
-              <input type="text" value={userGuess} onChange={(e) => setUserGuess(e.target.value)} style={{ width: '100%' }}/>
+              <input type="text" value={userGuess} onChange={(e) => setUserGuess(e.target.value)} style={{ outline: 0,borderRadius:0, width: '100%', padding: "8px 16px", fontSize: '32px', fontWeight: 'bold', margin: 0, appearance: 'none', WebkitAppearance: 'none', border: '1px solid'  }}/>
           <button type="submit" style={{
+            margin: 0,
             appearance: 'none',
             WebkitAppearance: 'none',
               padding: '8px 24px',
-            border: '1px solid',
+            border: '1px solid black',
             background: 'black',
             color: 'white',
           }}>Guess</button>
