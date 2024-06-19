@@ -300,18 +300,16 @@ const handleGuessSubmit = (e) => {
             color: 'white',
           }}>Guess</button>
             </form>
-  {lastGuessResult && (
-              <div>
-                <p>Accuracy: {lastGuessResult.accuracy}%</p>
-                <p>Time Taken: {lastGuessResult.time}ms</p>
-              </div>
-            )}
           </>
         )}
       </div>
     {pointsAnimation !== null && (
   <div className="points-animation">
     +{pointsAnimation.toFixed(2)} points
+              <div>
+                <p>Accuracy: {lastGuessResult.accuracy}%</p>
+                <p>Time Taken: {lastGuessResult.time}ms</p>
+              </div>
   </div>
 )}
       {gameOver && (
