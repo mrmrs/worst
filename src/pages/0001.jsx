@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "../App.css";
 
 const emojiMovies = [
+  { emojis: "🥊", title: "Rocky" },
   { emojis: "🐭🍝", title: "Ratatouille" },
   { emojis: "👻🖼️", title: "Ghostbusters" },
   { emojis: "🛏️🐴", title: "The Godfather" },
@@ -268,7 +269,7 @@ const handleGuessSubmit = (e) => {
 };
 
   return (
-    <div className="text-color background-color" style={{ textAlign: "center", height: "100vh", overflow: 'hidden' }}>
+    <div className="text-color background-color" style={{ position: 'relative', textAlign: "center", height: "100dvh", overflow: 'hidden' }}>
       <div style={{ position: "relative" }}>
         {gameOver ? (
           <button onClick={() => window.location.reload()} className="beacon animated-button">
