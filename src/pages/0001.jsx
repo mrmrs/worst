@@ -149,20 +149,21 @@ const App = () => {
     }
   };
 
-  const fetchScores = async (category) => {
-    const url = `https://games-0001.adam-f8f.workers.dev/get-scores?category=${category}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const scores = await response.json();
-      return scores;
-    } catch (error) {
-      console.error("Failed to fetch scores:", error);
-      return [];
+const fetchScores = async (category) => {
+  const url = `https://games-0001.adam-f8f.workers.dev/get-scores?category=${category}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  };
+    const scores = await response.json();
+    return scores;
+  } catch (error) {
+    console.error("Failed to fetch scores:", error);
+    return [];
+  }
+};
 
   useEffect(() => {
     localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
