@@ -276,14 +276,29 @@ const handleGuessSubmit = (e) => {
           </button>
         ) : (
           <>
-          <p>Time Left: {timeLeft}s</p>
-            <p>Score: {score.toFixed(2)}</p>
-            <div style={{ fontSize: '64px' }}>
+          <dl style={{ textAlign: 'left', margin: 0, padding: '24px'}}>
+          <dt style={{ display: 'block', fontSize: '12px', margin: 0 }}>Time Left</dt> 
+          <dd style={{ fontSize: '48px', fontWeight: 'bold',margin: 0 }} >{timeLeft}s</dd>
+          </dl>
+          <dl style={{ position: 'absolute', top: '0px', right: '16px', textAlign: 'left', margin: 0, padding: '24px'}}>
+          <dt style={{ display: 'block', fontSize: '12px', margin: 0 }}>Score</dt> 
+          <dd style={{ fontSize: '48px', fontWeight: 'bold',margin: 0 }} >
+         {score.toFixed(2)}
+          </dd>
+          </dl>
+            <div style={{ fontSize: '64px', letterSpacing: '8px' }}>
               {shuffledMovies[currentEmojiIndex].emojis}
             </div>
-            <form onSubmit={handleGuessSubmit}>
-              <input type="text" value={userGuess} onChange={(e) => setUserGuess(e.target.value)} />
-              <button type="submit">Guess</button>
+            <form onSubmit={handleGuessSubmit} style={{ display: 'flex', alignItems: 'stretch', marginTop: '24px', width: '80%', marginLeft: 'auto', marginRight: 'auto', maxWidth: '520px'  }}>
+              <input type="text" value={userGuess} onChange={(e) => setUserGuess(e.target.value)} style={{ width: '100%' }}/>
+          <button type="submit" style={{
+            appearance: 'none',
+            WebkitAppearance: 'none',
+              padding: '8px 24px',
+            border: '1px solid',
+            background: 'black',
+            color: 'white',
+          }}>Guess</button>
             </form>
   {lastGuessResult && (
               <div>

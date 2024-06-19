@@ -100,6 +100,12 @@ const GameArea = ({ onGameOver }) => {
     setBaseColor(nextColor);
   };
 
+  const handleBlockFall = (e) => {
+          if (e.evt.clientY < gameHeight - baseHeight) {
+            accelerateNearestBlock();
+          }
+  };
+
   const checkCollisions = () => {
     setBlocks(blocks => blocks.filter(block => {
       if (block.y > gameHeight - baseHeight - blockHeight && block.y < gameHeight) {
@@ -121,12 +127,7 @@ const GameArea = ({ onGameOver }) => {
 
   return (
     <Stage width={gameWidth} height={gameHeight} 
- onClick={(e) => {
-      // Check if the click is not on the base
-      if (e.evt.clientY < gameHeight - baseHeight) {
-        accelerateNearestBlock();
-      }
-    }}
+     onClick={handleBlockFall}
     >
       <Layer>
         <Rect width={gameWidth} height={gameHeight} fill={flash || "transparent"} />
