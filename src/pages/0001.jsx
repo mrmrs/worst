@@ -360,13 +360,13 @@ const handleGuessSubmit = (guess) => {
          {score.toFixed(2)}
           </dd>
           </dl>
- <div style={{ marginTop: '96px', fontSize: '64px', letterSpacing: '8px' }}>
+ <div style={{ marginTop: '64px', fontSize: '64px', letterSpacing: '8px' }}>
       {shuffledMovies[currentEmojiIndex].emojis}
     </div>
     <div style={{ marginTop: '48px', width: '100%', maxWidth: '320px', marginLeft: 'auto', marginRight: 'auto', padding: '0 16px'}}>
       {choices.map((choice, index) => (
         <button key={index} onClick={() => handleGuessSubmit(choice.title)} style={{ 
-          fontSize: '18px',
+          fontSize: '16px',
           backgroundColor: '#222',
           transition: 'box-shadow .2s ease',
           boxShadow: '-6px 10px 0px 0px hsl('+Math.random() * 360+'deg,90%,54%)',
