@@ -92,6 +92,7 @@ const emojiMovies = [
   { emojis: "🛢️⛪️🎳🥤", title: "There Will Be Blood" },
   { emojis: "🎅🎄🎃💀", title: "The nightmare Before Christmas" },
   { emojis: "🌀🪚", title: "Saw" },
+  { emojis: "🐵⬛🚀🔴👶🏻", title: "2001" },
 ];
 
 
