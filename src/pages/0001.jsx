@@ -419,16 +419,16 @@ const handleGuessSubmit = (guess) => {
               ) : (
                 <div style={{ maxWidth: '100%' }}>
                   <form onSubmit={handleUsernameSubmit} style={{ padding: '0 0px', marginTop: '16px', marginBottom: '16px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto', width: '90%', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                    <label style={{ alignSelf: 'center', fontSize: '10px', display: 'flex', alignItems: 'center', width: '64px', paddingRight: '8px', maxWidth: '100%', textAlign: 'right' }}>
-                      <span>Enter Username</span>
-                    </label>
+                    <label style={{ alignSelf: 'center', fontSize: '10px', display: 'block', alignItems: 'center', maxWidth: '192px', maxWidth: '100%', }}>
+                      <span style={{ display: 'block', marginBottom: '4px', }}>Enter Username</span>
                     <input autoComplete='off' type="text" name="username" required value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} style={{ textTransform: 'uppercase', maxWidth: '100%', width: '12ch', borderRadius: 0, fontSize: '24px', border: '1px solid currentColor', background: 'transparent', color: 'inherit', fontWeight: 900, padding: '8px', }} />
+                    </label>
                     <button type="submit" style={{ appearance: 'none', WebkitAppearance: 'none', fontWeight: 900, background: 'yellow', color: 'black', padding: '8px 12px', border: 0, height: '46px', fontSize: '12px', border: 0 }}>Submit</button>
                   </form>
                 </div>
               )}
-              <div style={{ width: '48%', padding: "4px 0px 4px 4px", margin: '0 16px', maxWidth: '256px', outline: '1px solid transparent', alignSelf: 'center', color: 'limegreen', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <p style={{ margin: 0, fontSize: '14px', }}>Continue?</p>
+              <div style={{ width: '48%', padding: "4px 0px 4px 4px", margin: '48px 16px 0 16px', maxWidth: '256px', outline: '1px solid transparent', alignSelf: 'center', color: 'limegreen', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <p style={{ margin: 0, fontSize: '14px', }}>Play Again?</p>
                 <button style={{ appearance: 'none', WebkitAppearance: 'none', display: "inline-block", marginLeft: 'auto', marginRight: "0px", background: 'limegreen', color: 'black', border: 0, }} onClick={() => window.location.reload()}>
                   Yes
                 </button>
@@ -448,7 +448,7 @@ const handleGuessSubmit = (guess) => {
                           <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left', opacity: .5 }}>{index + 1}</span>
                           {score.user}
                         </b>
-                        <code>{score.score}</code>
+                        <code>{Number(score.score).toFixed(3)}</code>
                       </li>
                     ))}
                   </ol>
@@ -463,7 +463,7 @@ const handleGuessSubmit = (guess) => {
                         <span style={{ width: '16px', display: 'inline-block', marginRight: '4px', textAlign: 'left', opacity: .5 }}>{index + 1}</span>
                         {score.user}
                       </b>
-                      <code>{score.score}</code>
+                      <code>{Number(score.score).toFixed(3)}</code>
                     </li>
                   ))}
                 </ol>
