@@ -92,8 +92,9 @@ const emojiMovies = [
   { emojis: "🛢️⛪️🎳🥤", title: "There Will Be Blood" },
   { emojis: "🎅🎄🎃💀", title: "The nightmare Before Christmas" },
   { emojis: "🌀🪚", title: "Saw" },
-  { emojis: "🐵⬛🚀🔴👶🏻", title: "2001" },
+  { emojis: "🐵⬛🚀🔴👶🏻", title: "2001: A Space Odessy" },
   { emojis: "🚗🐕🚓🎢👊🏻", title: "National Lampoon's Vacation" },  
+  { emojis: "🤡🏦🚌🦇🪙", title: "Dark Knight" },  
 ];
 
 
@@ -362,18 +363,22 @@ const handleGuessSubmit = (guess) => {
  <div style={{ marginTop: '96px', fontSize: '64px', letterSpacing: '8px' }}>
       {shuffledMovies[currentEmojiIndex].emojis}
     </div>
-    <div style={{ marginTop: '48px'}}>
+    <div style={{ marginTop: '48px', width: '100%', maxWidth: '320px', marginLeft: 'auto', marginRight: 'auto', padding: '0 16px'}}>
       {choices.map((choice, index) => (
         <button key={index} onClick={() => handleGuessSubmit(choice.title)} style={{ 
+          fontSize: '18px',
           backgroundColor: '#222',
           transition: 'box-shadow .2s ease',
           boxShadow: '-6px 10px 0px 0px hsl('+Math.random() * 360+'deg,90%,54%)',
           color: 'white',
-          margin: '10px', 
-          padding: '10px 20px', 
+          marginBottom: '20px', 
+          padding: '12px 24px', 
           appearance: 'none', 
           WebkitAppearance: 'none', 
-          border: '1px solid rgba(0,0,0,.1)' 
+          border: '1px solid rgba(0,0,0,.1)' ,
+          display: 'block',
+          width: '100%',
+          lineHeight: 1.25,
         }}>
           {choice.title}
         </button>
