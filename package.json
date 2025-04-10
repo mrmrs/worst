@@ -10,10 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@react-three/drei": "^10.0.6",
+    "@react-three/fiber": "^9.1.2",
+    "@react-three/postprocessing": "^3.0.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-konva": "^18.2.10",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "three": "^0.175.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
