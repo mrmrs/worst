@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Game0001 from './pages/0001';
+import Game0003 from './pages/0003';
 import ClassicHome from './pages/Index';
 import Game01 from './games/Game01';
 import Game02 from './games/Game02';
@@ -35,6 +36,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/0000" element={<ClassicHome />} />
         <Route path="/0001" element={<Game0001 />} />
+        <Route path="/0003" element={<Game0003 />} />
         <Route path="/01" element={<Game01 />} />
         <Route path="/02" element={<Game02 />} />
         <Route path="/03" element={<Game03 />} />
