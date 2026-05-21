@@ -36,6 +36,9 @@ const HIGH_SCORE_KEY = "worstWorldHighScore";
 const COMPLETION_KEY = "worstWorldCompleted";
 const MEMORY_KEY = "worstWorldMemory";
 const OVERWORLD_LEVEL_NAME = "The Wandering Wilds";
+const COUNT_API = "https://ts-gen-count.adam-f8f.workers.dev";
+const STEP_STAT_BUCKET_SIZE = 100;
+const TOTAL_STEPS_COUNTER_NAME = "WORST_GAME_0003_TOTAL_STEPS_100";
 const EMPTY_SET = new Set();
 
 const DIRECTIONS = {
@@ -1780,6 +1783,7 @@ const Home = () => {
   const resolveEncounterRef = useRef(null);
   const nearbyInteractRef = useRef(null);
   const tryInteractRef = useRef(null);
+  const stepStatBucketRef = useRef(0);
   const inputRef = useRef({
     keys: new Set(),
     buttons: {
@@ -1799,6 +1803,7 @@ const Home = () => {
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(getStoredHighScore);
   const bestScoreRef = useRef(bestScore);
+  const [totalStepsTaken, setTotalStepsTaken] = useState(null);
   const [encounter, setEncounter] = useState(null);
   const [highlightedChoice, setHighlightedChoice] = useState(0);
   const [toast, setToast] = useState(null);
@@ -1844,6 +1849,68 @@ const Home = () => {
     window.localStorage.setItem(HIGH_SCORE_KEY, String(nextScore));
     setBestScore(nextScore);
   }, []);
+
+  const fetchTotalStepsTaken = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${COUNT_API}/?name=${encodeURIComponent(TOTAL_STEPS_COUNTER_NAME)}`,
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const totalBlocks = Number.parseInt(await response.text(), 10) || 0;
+      const nextTotal = totalBlocks * STEP_STAT_BUCKET_SIZE;
+      setTotalStepsTaken((current) => (current === null ? nextTotal : Math.max(current, nextTotal)));
+    } catch (error) {
+      console.error("Error fetching total steps:", error);
+    }
+  }, []);
+
+  const incrementTotalStepBlocks = useCallback(
+    async (blocks) => {
+      if (blocks <= 0) {
+        return;
+      }
+
+      try {
+        await Promise.all(
+          Array.from({ length: blocks }, async () => {
+            const response = await fetch(
+              `${COUNT_API}/increment?name=${encodeURIComponent(TOTAL_STEPS_COUNTER_NAME)}`,
+              { method: "POST", keepalive: true },
+            );
+
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}`);
+            }
+          }),
+        );
+
+        setTotalStepsTaken((current) => (current ?? 0) + blocks * STEP_STAT_BUCKET_SIZE);
+        fetchTotalStepsTaken();
+      } catch (error) {
+        console.error("Error incrementing total steps:", error);
+      }
+    },
+    [fetchTotalStepsTaken],
+  );
+
+  const recordTotalSteps = useCallback(
+    (distance) => {
+      const nextBucket = Math.floor(distance / STEP_STAT_BUCKET_SIZE);
+      const bucketsToRecord = nextBucket - stepStatBucketRef.current;
+
+      if (bucketsToRecord <= 0) {
+        return;
+      }
+
+      stepStatBucketRef.current = nextBucket;
+      incrementTotalStepBlocks(bucketsToRecord);
+    },
+    [incrementTotalStepBlocks],
+  );
 
   const showToast = useCallback((nextToast, duration = 4200) => {
     if (toastTimeoutRef.current) {
@@ -2370,6 +2437,7 @@ const Home = () => {
     resolvedEncountersRef.current = new Set();
     npcMemoryRef.current = {};
     encounterRef.current = null;
+    stepStatBucketRef.current = 0;
     setEncounter(null);
     setEndingScene(null);
     castleGoalRef.current = null;
@@ -2427,6 +2495,10 @@ const Home = () => {
     setNearbyInteract(null);
   }, [worldMemory]);
 
+  useEffect(() => {
+    fetchTotalStepsTaken();
+  }, [fetchTotalStepsTaken]);
+
   useEffect(
     () => () => {
       if (toastTimeoutRef.current) {
@@ -2470,6 +2542,7 @@ const Home = () => {
     }
 
     world.score = Math.max(0, Math.floor(world.distance + world.bonus));
+    recordTotalSteps(world.distance);
     drawWorld(canvas, world, resolvedEncountersRef.current, time, questRef.current, castleGoalRef.current);
     const nextNearbyInteract = getNearbyInteract(
       world,
@@ -2507,7 +2580,7 @@ const Home = () => {
     }
 
     frameRef.current = window.requestAnimationFrame(updateFrame);
-  }, [endingScene, playEffect, recordDiscovery, saveBestScore]);
+  }, [endingScene, playEffect, recordDiscovery, recordTotalSteps, saveBestScore]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -2775,6 +2848,7 @@ const Home = () => {
           {hud.glyph} {hud.x}, {hud.y}
         </span>
         <span>{hud.distance} steps</span>
+        {totalStepsTaken !== null && <span>all {totalStepsTaken.toLocaleString()} steps</span>}
       </section>
 
       <nav className="world-links" aria-label="Games">
